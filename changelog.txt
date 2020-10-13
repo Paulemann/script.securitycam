@@ -1,8 +1,15 @@
+v1.4.3
+- (Re-)Adapted xbmc.python version for Leia in addon.xml. 
+- Corrected change log
+
 v1.4.2
-- allow duration, width, height, and url with user and password as additional parameters in jsonrpc call (all but duration require to include streamid)
+- Allow duration, width, height, and url with user and password as additional parameters in jsonrpc call (all but duration require to include streamid)
+- Attempt to pass actions to background window while Cam Overlay is active (experimental)
+- Merged python 3 code into master
 
 v1.4.1
 - First attempt to make the code run under python 2 and python 3.
+- Added missing dependency on script.mdoule.requests in addon.xml
 
 v1.4.0
 - Added capability to capture snapshots from rtsp stream (requires ffmpeg)
