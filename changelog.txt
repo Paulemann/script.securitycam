@@ -1,5 +1,8 @@
+v1.4.2
+- allow duration, width, height, and url with user and password as additional parameters in jsonrpc call (all but duration require to include streamid)
+
 v1.4.1
-- Added missing dependency and adapted xbmc.python version for Leia in addon.xml. 
+- First attempt to make the code run under python 2 and python 3.
 
 v1.4.0
 - Added capability to capture snapshots from rtsp stream (requires ffmpeg)

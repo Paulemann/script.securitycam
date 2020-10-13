@@ -8,14 +8,20 @@
 # JSONRPC Call to trigger this script:
 #
 # curl -s -u <user>:<password> -H "Content-Type: application/json" -X POST -d '{"jsonrpc":"2.0","method":"Addons.ExecuteAddon","params":{"addonid":"script.securitycam"},"id":1}' http://<ip>:<port>/jsonrpc
+# curl -X POST -H "Content-Type: application/json' -i http://<ip>:<port>/jsonrpc --data '{ "jsonrpc": "2.0", "method": "Addons.ExecuteAddon", "params": { "wait": false, "addonid": "script.securitycam", "params": { "streamid": "1"} }, "id": 1 }'
 #
 
 # Import the modules
 import os, time, random, string, sys, platform
 import xbmc, xbmcaddon, xbmcgui, xbmcvfs
-import urllib2, requests, subprocess
+import requests, subprocess
 from requests.auth import HTTPBasicAuth, HTTPDigestAuth
 from threading import Thread
+
+try:
+    from urllib.request import build_opener, HTTPPasswordMgrWithDefaultRealm, HTTPBasicAuthHandler, HTTPDigestAuthHandler, Request
+except ImportError:
+    from urllib2 import build_opener, HTTPPasswordMgrWithDefaultRealm, HTTPBasicAuthHandler, HTTPDigestAuthHandler, Request
 
 # Constants
 ACTION_PREVIOUS_MENU = 10
@@ -33,15 +39,30 @@ __icon__         = os.path.join(__addon_path__, 'icon.png')
 __loading__      = os.path.join(__addon_path__, 'loading.gif')
 
 # Get settings
-active     = [False] * MAXCAMS
+_width           = int(float(__addon__.getSetting('width')))
+_height          = int(float(__addon__.getSetting('height')))
+_interval        = int(float(__addon__.getSetting('interval')))
+_autoClose       = bool(__addon__.getSetting('autoClose') == 'true')
+_duration        = int(float(__addon__.getSetting('duration')) * 1000)
+_alignment       = int(float(__addon__.getSetting('alignment')))
+_padding         = int(float(__addon__.getSetting('padding')))
+_animate         = bool(__addon__.getSetting('animate') == 'true')
+_aspectRatio     = int(float(__addon__.getSetting('aspectRatio')))
 
-urls       = [None] * MAXCAMS
-usernames  = [None] * MAXCAMS
-passwords  = [None] * MAXCAMS
+active           = [False] * MAXCAMS
 
-streamid   = 0
+urls             = [None] * MAXCAMS
+usernames        = [None] * MAXCAMS
+passwords        = [None] * MAXCAMS
 
-ffmpeg_exec = 'ffmpeg.exe' if platform.system() == 'Windows' else 'ffmpeg'
+streamid         = 0
+streamurl        = None
+streamusr        = None
+streampwd        = None
+streamwd         = 0
+streamht         = 0
+
+ffmpeg_exec      = 'ffmpeg.exe' if platform.system() == 'Windows' else 'ffmpeg'
 
 if len(sys.argv) > 1:
     for i in range (1, len(sys.argv)):
@@ -49,14 +70,30 @@ if len(sys.argv) > 1:
             if sys.argv[i].split('=')[0] == 'streamid':
                 streamid = int(sys.argv[i].split('=')[1])
                 # break here, or keep on searching for other arguments
-                break
+                #break
+            if sys.argv[i].split('=')[0] == 'user':
+                streamusr = sys.argv[i].split('=')[1]
+            if sys.argv[i].split('=')[0] == 'password':
+                streampwd = sys.argv[i].split('=')[1]
+            if sys.argv[i].split('=')[0] == 'url':
+                streamurl = sys.argv[i].split('=')[1]
+            if sys.argv[i].split('=')[0] == 'width':
+                streamwd = int(sys.argv[i].split('=')[1])
+            if sys.argv[i].split('=')[0] == 'height':
+                streamht = int(sys.argv[i].split('=')[1])
+            if sys.argv[i].split('=')[0] == 'duration':
+                _duration = int(sys.argv[i].split('=')[1])
         except:
             continue
 
 if streamid in range(1, MAXCAMS + 1) and __addon__.getSetting('url{:d}'.format(streamid)):
-    urls[0] = __addon__.getSetting('url{:d}'.format(streamid))
-    usernames[0] = __addon__.getSetting('username{:d}'.format(streamid))
-    passwords[0] = __addon__.getSetting('password{:d}'.format(streamid))
+    urls[0] = streamurl or __addon__.getSetting('url{:d}'.format(streamid))
+    usernames[0] = streamusr or __addon__.getSetting('username{:d}'.format(streamid))
+    passwords[0] = streampwd or __addon__.getSetting('password{:d}'.format(streamid))
+    if streamwd > 0:
+        _width  = streamwd
+    if streamht > 0:
+        _height = streamht
 else:
     count = 0
     for i in range(MAXCAMS):
@@ -66,16 +103,6 @@ else:
             usernames[count] = __addon__.getSetting('username{:d}'.format(i + 1))
             passwords[count] = __addon__.getSetting('password{:d}'.format(i + 1))
             count += 1
-
-_width       = int(float(__addon__.getSetting('width')))
-_height      = int(float(__addon__.getSetting('height')))
-_interval    = int(float(__addon__.getSetting('interval')))
-_autoClose   = bool(__addon__.getSetting('autoClose') == 'true')
-_duration    = int(float(__addon__.getSetting('duration')) * 1000)
-_alignment   = int(float(__addon__.getSetting('alignment')))
-_padding     = int(float(__addon__.getSetting('padding')))
-_animate     = bool(__addon__.getSetting('animate') == 'true')
-_aspectRatio = int(float(__addon__.getSetting('aspectRatio')))
 
 # Utils
 def log(message,loglevel=xbmc.LOGNOTICE):
@@ -116,8 +143,8 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
     def __init__(self, urls, usernames, passwords):
         self.cams = [{'url':None, 'username':None, 'password':None, 'tmpdir':None, 'control':None} for i in range(MAXCAMS)]
 
-        passwd_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        self.opener = urllib2.build_opener()
+        passwd_mgr = HTTPPasswordMgrWithDefaultRealm()
+        self.opener = build_opener()
 
         for i in range(MAXCAMS):
             if urls[i]:
@@ -128,10 +155,10 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
                     self.cams[i]['password'] = passwords[i]
 
                     passwd_mgr.add_password(None, self.cams[i]['url'], self.cams[i]['username'], self.cams[i]['password'])
-                    self.opener.add_handler(urllib2.HTTPBasicAuthHandler(passwd_mgr))
-                    self.opener.add_handler(urllib2.HTTPDigestAuthHandler(passwd_mgr))
+                    self.opener.add_handler(HTTPBasicAuthHandler(passwd_mgr))
+                    self.opener.add_handler(HTTPDigestAuthHandler(passwd_mgr))
 
-                randomname = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
+                randomname = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
                 self.cams[i]['tmpdir'] = os.path.join(__profile__, randomname)
                 if not xbmcvfs.exists(self.cams[i]['tmpdir']):
                     xbmcvfs.mkdir(self.cams[i]['tmpdir'])
@@ -211,7 +238,7 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
         self.cleanup()
 
     def update(self, cam):
-        request = urllib2.Request(cam['url'])
+        request = Request(cam['url'])
         index = 1
 
         if cam['url'][:4] == 'rtsp' and not which(ffmpeg_exec):
@@ -254,7 +281,7 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
 
                     if imgData:
                         file = xbmcvfs.File(snapshot, 'wb')
-                        file.write(imgData)
+                        file.write(bytearray(imgData))
                         file.close()
 
                 elif cam['url'][:4] == 'rtsp':
@@ -265,7 +292,7 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
                 elif xbmcvfs.exists(cam['url']):
                     xbmcvfs.copy(cam['url'], snapshot)
 
-            except Exception, e:
+            except Exception as e:
                 log(str(e))
                 #snapshot = __loading__
                 snapshot = None
@@ -291,6 +318,9 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
     def onAction(self, action):
         if action in (ACTION_PREVIOUS_MENU, ACTION_BACKSPACE, ACTION_NAV_BACK):
             self.stop()
+        else:
+            curWinID = xbmcgui.getCurrentWindowId()
+            xbmc.executebuiltin('Action(%s,%s)' % (self.Action[action.getId()], curWinID))
 
     def stop(self):
         self.isRunning = False
