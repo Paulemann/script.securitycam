@@ -1,11 +1,15 @@
+
+v1.5.0
+- Added string.po language files as an alternative to strings.xml which will be deprecated in kodi v19
+
 v1.4.3
-- (Re-)Adapted xbmc.python version for Leia in addon.xml. 
+- (Re-)Adapted xbmc.python version for Leia in addon.xml.
 - Corrected change log
 
 v1.4.2
 - Allow duration, width, height, and url with user and password as additional parameters in jsonrpc call (all but duration require to include streamid)
 - Attempt to pass actions to background window while Cam Overlay is active (experimental)
-- Merged python 3 code into master
+- Merged python 3 compatible code into master
 
 v1.4.1
 - First attempt to make the code run under python 2 and python 3.
@@ -19,7 +23,7 @@ v1.3.5
 
 v1.3.0
 - Setting of streamid parameter in jsonrpc call allows selection of camera stream to be displayed by index
- 
+
 v1.2.2
 - Keep last pic if update fails
 
@@ -46,7 +50,7 @@ v1.0
 - Code reworked. Parts removed, e.g. animation, placeholder support
 - Authenticatin handling once again changed (still untested)
 - Now supports overlay of up to 4 camera image feeds simultaneously
-- Image updates are run as threads to increase performance  
+- Image updates are run as threads to increase performance
 
 v0.0.9
 - Change image update method to prevent caching (should eliminate issue some users were seeing where image didn't update properly)
@@ -76,4 +80,3 @@ v0.0.2
 
 v0.0.1
 - Initial version
-

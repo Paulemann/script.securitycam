@@ -1,56 +1,55 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <string id="32000">Kamera 1</string>
+  <string id="32001">Url:</string>
+  <string id="32002">Benutzername:</string>
+  <string id="32003">Passwort:</string>
+  <string id="32004">Aktiv:</string>
 
-  <strings>
-    <string id="32000">Kamera 1</string>
-    <string id="32001">Url:</string>
-    <string id="32002">Benutzername:</string>
-    <string id="32003">Passwort:</string>
-    <string id="32004">Aktiv:</string>
+  <string id="32010">Kamera 2</string>
+  <string id="32011">Url:</string>
+  <string id="32012">Benutzername:</string>
+  <string id="32013">Passwort:</string>
+  <string id="32014">Aktiv:</string>
 
-    <string id="32010">Kamera 2</string>
-    <string id="32011">Url:</string>
-    <string id="32012">Benutzername:</string>
-    <string id="32013">Passwort:</string>
-    <string id="32014">Aktiv:</string>
+  <string id="32020">Kamera 3</string>
+  <string id="32021">Url:</string>
+  <string id="32022">Benutzername:</string>
+  <string id="32023">Passwort:</string>
+  <string id="32024">Aktiv:</string>
 
-    <string id="32020">Kamera 3</string>
-    <string id="32021">Url:</string>
-    <string id="32022">Benutzername:</string>
-    <string id="32023">Passwort:</string>
-    <string id="32024">Aktiv:</string>
+  <string id="32030">Kamera 4</string>
+  <string id="32031">Url:</string>
+  <string id="32032">Benutzername:</string>
+  <string id="32033">Passwort:</string>
+  <string id="32034">Aktiv:</string>
 
-    <string id="32030">Kamera 4</string>
-    <string id="32031">Url:</string>
-    <string id="32032">Benutzername:</string>
-    <string id="32033">Passwort:</string>
-    <string id="32034">Aktiv:</string>
+  <string id="33000">Anzeige</string>
 
-    <string id="33000">Anzeige</string>
+  <string id="33001">Fensterbreite:</string>
+  <string id="33002">Fensterhöhe:</string>
+  <string id="33003">Aktualisierungsinterval (in msec):</string>
+  <string id="33004">Automatisches Schließen:</string>
+  <string id="33005">Anzeigedauer (in Sekunden):</string>
+  <string id="33006">Ausrichtung:</string>
+  <string id="33007">Zwischenraum (in Pixeln):</string>
+  <string id="33008">Animation beim Öffnen/Schließen:</string>
+  <string id="33009">Bildformat-Anpassung:</string>
 
-    <string id="33001">Fensterbreite:</string>
-    <string id="33002">Fensterhöhe:</string>
-    <string id="33003">Aktualisierungsinterval (in msec):</string>
-    <string id="33004">Automatisches Schließen:</string>
-    <string id="33005">Anzeigedauer (in Sekunden):</string>
-    <string id="33006">Ausrichtung:</string>
-    <string id="33007">Zwischenraum (in Pixeln):</string>
-    <string id="33008">Animation beim Öffnen/Schließen:</string>
-    <string id="33009">Bildformat-Anpassung:</string>
+  <string id="34000">Vertikal: rechts, von oben nach unten</string>
+  <string id="34001">Vertikal: links, von oben nach unten</string>
+  <string id="34002">Horizontal: oben, von links nach rechts</string>
+  <string id="34003">Horizontal: unten, von links nach rechts</string>
+  <string id="34004">Quadrat: rechts oben</string>
+  <string id="34005">Quadrat: links oben</string>
+  <string id="34006">Vertikal: rechts, von unten nach oben</string>
+  <string id="34007">Vertikal: links, von unten nach oben</string>
+  <string id="34008">Horizontal: oben, von rechts nach links</string>
+  <string id="34009">Horizontal: unten, von rechts nach links</string>
+  <string id="34010">Quadrat: rechts unten</string>
+  <string id="34011">Quadrat: links unten</string>
 
-    <string id="34000">Vertikal: rechts, von oben nach unten</string>
-    <string id="34001">Vertikal: links, von oben nach unten</string>
-    <string id="34002">Horizontal: oben, von links nach rechts</string>
-    <string id="34003">Horizontal: unten, von links nach rechts</string>
-    <string id="34004">Quadrat: rechts oben</string>
-    <string id="34005">Quadrat: links oben</string>
-    <string id="34006">Vertikal: rechts, von unten nach oben</string>
-    <string id="34007">Vertikal: links, von unten nach oben</string>
-    <string id="34008">Horizontal: oben, von rechts nach links</string>
-    <string id="34009">Horizontal: unten, von rechts nach links</string>
-    <string id="34010">Quadrat: rechts unten</string>
-    <string id="34011">Quadrat: links unten</string>
-
-    <string id="34020">Strecken</string>
-    <string id="34021">Vergrößern (Abschneiden)</string>
-    <string id="34022">Verkleinern (Schw. Balken)</string>
-  </strings>
+  <string id="34020">Strecken</string>
+  <string id="34021">Vergrößern (Abschneiden)</string>
+  <string id="34022">Verkleinern (Schw. Balken)</string>
+</strings>

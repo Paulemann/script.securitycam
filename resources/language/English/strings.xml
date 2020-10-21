@@ -1,59 +1,57 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+  <string id="32000">Camera 1</string>
+  <string id="32001">Image Url:</string>
+  <string id="32002">Username:</string>
+  <string id="32003">Password:</string>
+  <string id="32004">Active:</string>
 
-  <strings>
+  <string id="32010">Camera 2</string>
+  <string id="32011">Image Url:</string>
+  <string id="32012">Username:</string>
+  <string id="32013">Password:</string>
+  <string id="32014">Active:</string>
 
-    <string id="32000">Camera 1</string>
-    <string id="32001">Image Url:</string>
-    <string id="32002">Username:</string>
-    <string id="32003">Password:</string>
-    <string id="32004">Active:</string>
+  <string id="32020">Camera 3</string>
+  <string id="32021">Image Url:</string>
+  <string id="32022">Username:</string>
+  <string id="32023">Password:</string>
+  <string id="32024">Active:</string>
 
-    <string id="32010">Camera 2</string>
-    <string id="32011">Image Url:</string>
-    <string id="32012">Username:</string>
-    <string id="32013">Password:</string>
-    <string id="32014">Active:</string>
+  <string id="32030">Camera 4</string>
+  <string id="32031">Image Url:</string>
+  <string id="32032">Username:</string>
+  <string id="32033">Password:</string>
+  <string id="32034">Active:</string>
 
-    <string id="32020">Camera 3</string>
-    <string id="32021">Image Url:</string>
-    <string id="32022">Username:</string>
-    <string id="32023">Password:</string>
-    <string id="32024">Active:</string>
+  <string id="33000">Behavior</string>
 
-    <string id="32030">Camera 4</string>
-    <string id="32031">Image Url:</string>
-    <string id="32032">Username:</string>
-    <string id="32033">Password:</string>
-    <string id="32034">Active:</string>
+  <string id="33001">Window Width:</string>
+  <string id="33002">Window Height:</string>
+  <string id="33003">Refresh Interval (in milliseconds):</string>
 
-    <string id="33000">Behavior</string>
+  <string id="33004">Enable auto-close after duration:</string>
+  <string id="33005">Duration (in seconds):</string>
 
-    <string id="33001">Window Width:</string>
-    <string id="33002">Window Height:</string>
-    <string id="33003">Refresh Interval (in milliseconds):</string>
+  <string id="33006">Alignment:</string>
+  <string id="33007">Padding (in Pixels):</string>
+  <string id="33008">Animate on open/close:</string>
+  <string id="33009">Aspect Ratio:</string>
 
-    <string id="33004">Enable auto-close after duration:</string>
-    <string id="33005">Duration (in seconds):</string>
+  <string id="34000">Vertical: right, from top to bottom</string>
+  <string id="34001">Vertical: left, from top to bottom</string>
+  <string id="34002">Horizontal: top, from left to right</string>
+  <string id="34003">Horizontal: bottom, from left to right</string>
+  <string id="34004">Square: right top</string>
+  <string id="34005">Square: left top</string>
+  <string id="34006">Vertical: right, from bottom to top</string>
+  <string id="34007">Vertical: left, from bottom to top</string>
+  <string id="34008">Horizontal: top, from right to left</string>
+  <string id="34009">Horizontal: bottom, from right to left</string>
+  <string id="34010">Square: right bottom</string>
+  <string id="34011">Square: left bottom</string>
 
-    <string id="33006">Alignment:</string>
-    <string id="33007">Padding (in Pixels):</string>
-    <string id="33008">Animate on open/close:</string>
-    <string id="33009">Aspect Ratio:</string>
-
-    <string id="34000">Vertical: right, from top to bottom</string>
-    <string id="34001">Vertical: left, from top to bottom</string>
-    <string id="34002">Horizontal: top, from left to right</string>
-    <string id="34003">Horizontal: bottom, from left to right</string>
-    <string id="34004">Square: right top</string>
-    <string id="34005">Square: left top</string>
-    <string id="34006">Vertical: right, from bottom to top</string>
-    <string id="34007">Vertical: left, from bottom to top</string>
-    <string id="34008">Horizontal: top, from right to left</string>
-    <string id="34009">Horizontal: bottom, from right to left</string>
-    <string id="34010">Square: right bottom</string>
-    <string id="34011">Square: left bottom</string>
-
-    <string id="34020">Stretch</string>
-    <string id="34021">Scale up (crops)</string>
-    <string id="34022">Scale down (black bars)</string>
-  </strings>
+  <string id="34020">Stretch</string>
+  <string id="34021">Scale up (crops)</string>
+  <string id="34022">Scale down (black bars)</string>
+</strings>

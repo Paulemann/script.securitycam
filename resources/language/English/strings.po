@@ -1,0 +1,197 @@
+# Kodi Media Center language file
+# Addon Name: Security Cam Overlay
+# Addon id: script.securitycam
+# Addon Provider: Paulemann
+msgid ""
+msgstr ""
+"Project-Id-Version: Kodi-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@kodi.org\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Paulemann\n"
+"Language-Team: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "#32000"
+msgid "Camera 1"
+msgstr ""
+
+msgctxt "#32001"
+msgid "Image Url:"
+msgstr ""
+
+msgctxt "#32002"
+msgid "Username:"
+msgstr ""
+
+msgctxt "#32003"
+msgid "Password:"
+msgstr ""
+
+msgctxt "#32004"
+msgid "Active:"
+msgstr ""
+
+msgctxt "#32010"
+msgid "Camera 2"
+msgstr ""
+
+msgctxt "#32011"
+msgid "Image Url:"
+msgstr ""
+
+msgctxt "#32012"
+msgid "Username:"
+msgstr ""
+
+msgctxt "#32013"
+msgid "Password:"
+msgstr ""
+
+msgctxt "#32014"
+msgid "Active:"
+msgstr ""
+
+msgctxt "#32020"
+msgid "Camera 3"
+msgstr ""
+
+msgctxt "#32021"
+msgid "Image Url:"
+msgstr ""
+
+msgctxt "#32022"
+msgid "Username:"
+msgstr ""
+
+msgctxt "#32023"
+msgid "Password:"
+msgstr ""
+
+msgctxt "#32024"
+msgid "Active:"
+msgstr ""
+
+msgctxt "#32030"
+msgid "Camera 4"
+msgstr ""
+
+msgctxt "#32031"
+msgid "Image Url:"
+msgstr ""
+
+msgctxt "#32032"
+msgid "Username:"
+msgstr ""
+
+msgctxt "#32033"
+msgid "Password:"
+msgstr ""
+
+msgctxt "#32034"
+msgid "Active:"
+msgstr ""
+
+msgctxt "#33000"
+msgid "Behavior"
+msgstr ""
+
+msgctxt "#33001"
+msgid "Window Width:"
+msgstr ""
+
+msgctxt "#33002"
+msgid "Window Height:"
+msgstr ""
+
+msgctxt "#33003"
+msgid "Refresh Interval (in milliseconds):"
+msgstr ""
+
+msgctxt "#33004"
+msgid "Enable auto-close after duration:"
+msgstr ""
+
+msgctxt "#33005"
+msgid "Duration (in seconds):"
+msgstr ""
+
+msgctxt "#33006"
+msgid "Alignment:"
+msgstr ""
+
+msgctxt "#33007"
+msgid "Padding (in Pixels):"
+msgstr ""
+
+msgctxt "#33008"
+msgid "Animate on open/close:"
+msgstr ""
+
+msgctxt "#33009"
+msgid "Aspect Ratio:"
+msgstr ""
+
+msgctxt "#34000"
+msgid "Vertical: right, from top to bottom"
+msgstr ""
+
+msgctxt "#34001"
+msgid "Vertical: left, from top to bottom"
+msgstr ""
+
+msgctxt "#34002"
+msgid "Horizontal: top, from left to right"
+msgstr ""
+
+msgctxt "#34003"
+msgid "Horizontal: bottom, from left to right"
+msgstr ""
+
+msgctxt "#34004"
+msgid "Square: right top"
+msgstr ""
+
+msgctxt "#34005"
+msgid "Square: left top"
+msgstr ""
+
+msgctxt "#34006"
+msgid "Vertical: right, from bottom to top"
+msgstr ""
+
+msgctxt "#34007"
+msgid "Vertical: left, from bottom to top"
+msgstr ""
+
+msgctxt "#34008"
+msgid "Horizontal: top, from right to left"
+msgstr ""
+
+msgctxt "#34009"
+msgid "Horizontal: bottom, from right to left"
+msgstr ""
+
+msgctxt "#34010"
+msgid "Square: right bottom"
+msgstr ""
+
+msgctxt "#34011"
+msgid "Square: left bottom"
+msgstr ""
+
+msgctxt "#34020"
+msgid "Stretch"
+msgstr ""
+
+msgctxt "#34021"
+msgid "Scale up (crops)"
+msgstr ""
+
+msgctxt "#34022"
+msgid "Scale down (black bars)"
+msgstr ""

@@ -315,12 +315,12 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
                     xbmcvfs.delete(os.path.join(self.cams[i]['tmpdir'], file))
                 xbmcvfs.rmdir(self.cams[i]['tmpdir'])
 
-    def onAction(self, action):
-        if action in (ACTION_PREVIOUS_MENU, ACTION_BACKSPACE, ACTION_NAV_BACK):
-            self.stop()
-        else:
-            curWinID = xbmcgui.getCurrentWindowId()
-            xbmc.executebuiltin('Action(%s,%s)' % (self.Action[action.getId()], curWinID))
+    #def onAction(self, action):
+    #    if action in (ACTION_PREVIOUS_MENU, ACTION_BACKSPACE, ACTION_NAV_BACK):
+    #        self.stop()
+    #    #else:
+    #    #    curWinID = xbmcgui.getCurrentWindowId()
+    #    #    xbmc.executebuiltin('Action(%s,%s)' % (self.Action[action.getId()], curWinID))
 
     def stop(self):
         self.isRunning = False
