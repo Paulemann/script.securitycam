@@ -25,8 +25,9 @@ except ImportError:
 
 # Constants
 ACTION_PREVIOUS_MENU = 10
-ACTION_BACKSPACE = 110
+ACTION_STOP = 13
 ACTION_NAV_BACK = 92
+ACTION_BACKSPACE = 110
 
 MAXCAMS = 4
 
@@ -39,21 +40,19 @@ __icon__         = os.path.join(__addon_path__, 'icon.png')
 __loading__      = os.path.join(__addon_path__, 'loading.gif')
 
 # Get settings
-_width           = int(float(__addon__.getSetting('width')))
-_height          = int(float(__addon__.getSetting('height')))
-_interval        = int(float(__addon__.getSetting('interval')))
-_autoClose       = bool(__addon__.getSetting('autoClose') == 'true')
-_duration        = int(float(__addon__.getSetting('duration')) * 1000)
-_alignment       = int(float(__addon__.getSetting('alignment')))
-_padding         = int(float(__addon__.getSetting('padding')))
-_animate         = bool(__addon__.getSetting('animate') == 'true')
-_aspectRatio     = int(float(__addon__.getSetting('aspectRatio')))
+SETTINGS = {
+    'width':         int(float(__addon__.getSetting('width'))),
+    'height':        int(float(__addon__.getSetting('height'))),
+    'interval':      int(float(__addon__.getSetting('interval'))),
+    'autoClose':     bool(__addon__.getSetting('autoClose') == 'true'),
+    'duration':      int(float(__addon__.getSetting('duration')) * 1000),
+    'alignment':     int(float(__addon__.getSetting('alignment'))),
+    'padding':       int(float(__addon__.getSetting('padding'))),
+    'animate':       bool(__addon__.getSetting('animate') == 'true'),
+    'aspectRatio':   int(float(__addon__.getSetting('aspectRatio')))
+    }
 
-active           = [False] * MAXCAMS
-
-urls             = [None] * MAXCAMS
-usernames        = [None] * MAXCAMS
-passwords        = [None] * MAXCAMS
+CAMERAS          = []
 
 streamid         = 0
 streamurl        = None
@@ -82,31 +81,33 @@ if len(sys.argv) > 1:
             if sys.argv[i].split('=')[0] == 'height':
                 streamht = int(sys.argv[i].split('=')[1])
             if sys.argv[i].split('=')[0] == 'duration':
-                _duration = int(sys.argv[i].split('=')[1])
+                SETTINGS['duration'] = int(sys.argv[i].split('=')[1])
         except:
             continue
 
-if streamid in range(1, MAXCAMS + 1) and __addon__.getSetting('url{:d}'.format(streamid)):
-    urls[0] = streamurl or __addon__.getSetting('url{:d}'.format(streamid))
-    usernames[0] = streamusr or __addon__.getSetting('username{:d}'.format(streamid))
-    passwords[0] = streampwd or __addon__.getSetting('password{:d}'.format(streamid))
-    if streamwd > 0:
-        _width  = streamwd
-    if streamht > 0:
-        _height = streamht
+if streamid in range(1, MAXCAMS + 1) and (streamurl or __addon__.getSetting('url{:d}'.format(streamid))):
+    cam = {
+        'url': streamurl or __addon__.getSetting('url{:d}'.format(streamid)),
+        'username': streamusr or __addon__.getSetting('username{:d}'.format(streamid)),
+        'password': streampwd or __addon__.getSetting('password{:d}'.format(streamid))
+        }
+    CAMERAS.append(cam)
+    if streamwd > 0:    SETTINGS['width']  = streamwd
+    if streamht > 0:    SETTINGS['height'] = streamht
 else:
-    count = 0
     for i in range(MAXCAMS):
-        active[i] = bool(__addon__.getSetting('active{:d}'.format(i + 1)) == 'true')
-        if active[i]:
-            urls[count] = __addon__.getSetting('url{:d}'.format(i + 1))
-            usernames[count] = __addon__.getSetting('username{:d}'.format(i + 1))
-            passwords[count] = __addon__.getSetting('password{:d}'.format(i + 1))
-            count += 1
+        if __addon__.getSetting('active{:d}'.format(i + 1)) == 'true':
+            cam = {
+                'url':      __addon__.getSetting('url{:d}'.format(i + 1)),
+                'username': __addon__.getSetting('username{:d}'.format(i + 1)),
+                'password': __addon__.getSetting('password{:d}'.format(i + 1))
+                }
+            CAMERAS.append(cam)
 
 # Utils
 def log(message,loglevel=xbmc.LOGNOTICE):
     xbmc.log(msg='[{}] {}'.format(__addon_id__, message), level=loglevel)
+
 
 def which(pgm):
     for path in os.getenv('PATH').split(os.path.pathsep):
@@ -116,120 +117,93 @@ def which(pgm):
 
     return None
 
-# Auth Scheme Mapping for Requets
-AUTH_MAP = {
-    'basic': HTTPBasicAuth,
-    'digest': HTTPDigestAuth,
-}
-
-def auth_get(url, *args, **kwargs):
-    r = requests.get(url, **kwargs)
-
-    if r.status_code != 401:
-        return r
-
-    auth_scheme = r.headers['WWW-Authenticate'].split(' ')[0]
-    auth = AUTH_MAP.get(auth_scheme.lower())
-
-    if not auth:
-        raise ValueError('Unknown authentication scheme')
-
-    r = requests.get(url, auth=auth(*args), **kwargs)
-
-    return r
-
 # Classes
 class CamPreviewDialog(xbmcgui.WindowDialog):
-    def __init__(self, urls, usernames, passwords):
-        self.cams = [{'url':None, 'username':None, 'password':None, 'tmpdir':None, 'control':None} for i in range(MAXCAMS)]
+    def __init__(self, cameras):
+        self.total = len(cameras)
+        self.cams = cameras
 
         passwd_mgr = HTTPPasswordMgrWithDefaultRealm()
         self.opener = build_opener()
 
-        for i in range(MAXCAMS):
-            if urls[i]:
-                self.cams[i]['url'] = urls[i]
+        for i in range(self.total):
+            if self.cams[i]['username'] and self.cams[i]['password']:
+                passwd_mgr.add_password(None, self.cams[i]['url'], self.cams[i]['username'], self.cams[i]['password'])
+                self.opener.add_handler(HTTPBasicAuthHandler(passwd_mgr))
+                self.opener.add_handler(HTTPDigestAuthHandler(passwd_mgr))
 
-                if usernames[i] and passwords[i]:
-                    self.cams[i]['username'] = usernames[i]
-                    self.cams[i]['password'] = passwords[i]
+            randomname = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
+            self.cams[i]['tmpdir'] = os.path.join(__profile__, randomname)
+            if not xbmcvfs.exists(self.cams[i]['tmpdir']):
+                xbmcvfs.mkdir(self.cams[i]['tmpdir'])
 
-                    passwd_mgr.add_password(None, self.cams[i]['url'], self.cams[i]['username'], self.cams[i]['password'])
-                    self.opener.add_handler(HTTPBasicAuthHandler(passwd_mgr))
-                    self.opener.add_handler(HTTPDigestAuthHandler(passwd_mgr))
+            x, y, w, h = self.coordinates(i)
+            self.cams[i]['control'] = xbmcgui.ControlImage(x, y, w, h, __loading__, aspectRatio = SETTINGS['aspectRatio'])
+            self.addControl(self.cams[i]['control'])
 
-                randomname = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
-                self.cams[i]['tmpdir'] = os.path.join(__profile__, randomname)
-                if not xbmcvfs.exists(self.cams[i]['tmpdir']):
-                    xbmcvfs.mkdir(self.cams[i]['tmpdir'])
-
-                x, y, w, h = self.coordinates(i)
-                self.cams[i]['control'] = xbmcgui.ControlImage(x, y, w, h, __loading__, aspectRatio = _aspectRatio)
-                self.addControl(self.cams[i]['control'])
-
-                if _animate:
-                    if _alignment in [0, 4, 6, 8, 9]:
+            if SETTINGS['animate']:
+                if SETTINGS['alignment'] in [0, 4, 6, 8, 9]:
                         direction = 1
-                    else:
-                        direction = -1
-                    self.cams[i]['control'].setAnimations([('WindowOpen', 'effect=slide start=%d time=1000 tween=cubic easing=in'%(w*direction),), ('WindowClose', 'effect=slide end=%d time=1000 tween=cubic easing=in'%(w*direction),)])
+                else:
+                    direction = -1
+                self.cams[i]['control'].setAnimations([('WindowOpen', 'effect=slide start=%d time=1000 tween=cubic easing=in'%(w*direction),), ('WindowClose', 'effect=slide end=%d time=1000 tween=cubic easing=in'%(w*direction),)])
+
 
     def coordinates(self, position):
-        COORD_GRID_WIDTH = 1280
-        COORD_GRID_HEIGHT = 720
+        WIDTH  = 1280
+        HEIGHT = 720
 
-        scaledWidth = int(float(COORD_GRID_WIDTH) / self.getWidth() * _width)
-        scaledHeight = int(float(COORD_GRID_HEIGHT) / self.getHeight() * _height)
+        w = SETTINGS['width']
+        h = SETTINGS['height']
+        p = SETTINGS['padding']
 
-        scaledPaddingX = int(float(COORD_GRID_WIDTH) / self.getWidth() * _padding)
-        scaledPaddingY = int(float(COORD_GRID_HEIGHT) / self.getHeight() * _padding)
+        alignment = SETTINGS['alignment']
 
-        if _alignment == 0: # vertical right, top to bottom
-            scaledX = COORD_GRID_WIDTH - scaledWidth - scaledPaddingX
-            scaledY = position * scaledHeight + (position + 1) * scaledPaddingY
-        if _alignment == 1: # vertical left, top to bottom
-            scaledX = scaledPaddingX
-            scaledY = position * scaledHeight + (position + 1) * scaledPaddingY
-        if _alignment == 2: # horizontal top, left to right
-            scaledX = position * scaledWidth + (position + 1) * scaledPaddingX
-            scaledY = scaledPaddingY
-        if _alignment == 3: # horizontal bottom, left to right
-            scaledX = position * scaledWidth + (position + 1) * scaledPaddingX
-            scaledY = COORD_GRID_HEIGHT - scaledHeight - scaledPaddingY
-        if _alignment == 4: # square right
-            scaledX = COORD_GRID_WIDTH - (2 - position%2) * scaledWidth - (2 - position%2) * scaledPaddingX
-            scaledY = position/2 * scaledHeight + (position/2 + 1) * scaledPaddingY
-        if _alignment == 5: # square left
-            scaledX = position%2 * scaledWidth + (position%2 + 1) * scaledPaddingX
-            scaledY = position/2 * scaledHeight + (position/2 + 1) * scaledPaddingY
-        if _alignment == 6: # vertical right, bottom to top
-            scaledX = COORD_GRID_WIDTH - scaledWidth - scaledPaddingX
-            scaledY = COORD_GRID_HEIGHT - (position + 1) * scaledHeight + (position + 1) * scaledPaddingY
-        if _alignment == 7: # vertical left, bottom to top
-            scaledX = scaledPaddingX
-            scaledY = COORD_GRID_HEIGHT - (position + 1) * scaledHeight + (position + 1) * scaledPaddingY
-        if _alignment == 8: # horizontal top, right to left
-            scaledX = COORD_GRID_WIDTH - (position + 1) * scaledWidth - (position + 1) * scaledPaddingX
-            scaledY = scaledPaddingY
-        if _alignment == 9: # horizontal bottom, right to left
-            scaledX = COORD_GRID_WIDTH - (position + 1) * scaledWidth - (position + 1) * scaledPaddingX
-            scaledY = COORD_GRID_HEIGHT - scaledHeight - scaledPaddingY
+        if alignment == 0: # vertical right, top to bottom
+            x = WIDTH - (w + p)
+            y = p + position * (h + p)
+        if alignment == 1: # vertical left, top to bottom
+            x = p
+            y = p + position * (h + p)
+        if alignment == 2: # horizontal top, left to right
+            x = p + position * (w + p)
+            y = p
+        if alignment == 3: # horizontal bottom, left to right
+            x = p + position * (w + p)
+            y = HEIGHT - (h + p)
+        if alignment == 4: # square right
+            x = WIDTH - (2 - position%2) * (w + p)
+            y = p + position/2 * (h + p)
+        if alignment == 5: # square left
+            x = p + position%2 * (w + p)
+            y = p + position/2 * (h + p)
+        if alignment == 6: # vertical right, bottom to top
+            x = WIDTH - (w + p)
+            y = HEIGHT - (position + 1) * (h + p)
+        if alignment == 7: # vertical left, bottom to top
+            x = p
+            y = HEIGHT - (position + 1) * (h + p)
+        if alignment == 8: # horizontal top, right to left
+            x = WIDTH - (position + 1) * (w + p)
+            y = p
+        if alignment == 9: # horizontal bottom, right to left
+            x = WIDTH - (position + 1) * (w + p)
+            y = HEIGHT - (h + p)
 
-        return scaledX, scaledY, scaledWidth, scaledHeight
+        return x, y, w, h
+
 
     def start(self):
         self.show()
         self.isRunning = True
 
-        for i in range(MAXCAMS):
-            if self.cams[i]['url']:
-                Thread(target=self.update, args=(self.cams[i],)).start()
+        for i in range(self.total):
+            Thread(target=self.update, args=(self.cams[i],)).start()
 
         startTime = time.time()
-        while(not _autoClose or (time.time() - startTime) * 1000 <= _duration):
+        while(not SETTINGS['autoClose'] or (time.time() - startTime) * 1000 <= SETTINGS['duration']):
             if not self.isRunning:
                  break
-
             xbmc.sleep(500)
 
         self.isRunning = False
@@ -237,17 +211,20 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
         self.close()
         self.cleanup()
 
+
     def update(self, cam):
         request = Request(cam['url'])
         index = 1
 
-        if cam['url'][:4] == 'rtsp' and not which(ffmpeg_exec):
-            log('Error: {} not installed. Can\'t process rtsp input format.'.format(ffmpeg_exec))
-            #self.isRunning = False
-            self.stop()
-            return
+        type = cam['url'][:4]
 
-        if cam['url'][:4] == 'rtsp':
+        if type == 'rtsp':
+            if not which(ffmpeg_exec):
+                log('Error: {} not installed. Can\'t process rtsp input format.'.format(ffmpeg_exec))
+                #self.isRunning = False
+                self.stop()
+                return
+
             if cam['username'] and cam['password']:
                 input = 'rtsp://{}:{}@{}'.format(cam['username'], cam['password'], cam['url'][7:])
             else:
@@ -260,9 +237,9 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
                       '-i', input,
                       '-an',
                       '-f', 'image2',
-                      '-vf', 'fps=fps='+str(int(1000.0/_interval)),
+                      '-vf', 'fps=fps='+str(int(1000.0/SETTINGS['interval'])),
                       '-q:v', '10',
-                      '-s', str(_width)+'x'+str(_height),
+                      '-s', str(SETTINGS['width'])+'x'+str(SETTINGS['height']),
                       '-vcodec', 'mjpeg',
                       xbmc.translatePath(output)]
             p = subprocess.Popen(command)
@@ -272,22 +249,19 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
             index += 1
 
             try:
-                if cam['url'][:4] == 'http':
+                if type == 'http':
                     imgData = self.opener.open(request).read()
-
-                    #r = auth_get(cam['url'], cam['username'], cam['password'], verify=False, stream=True)
-                    #if r.status_code == 200: # success!
-                    #    imgData = r.content
 
                     if imgData:
                         file = xbmcvfs.File(snapshot, 'wb')
                         file.write(bytearray(imgData))
                         file.close()
 
-                elif cam['url'][:4] == 'rtsp':
+                elif type == 'rtsp':
                     while(self.isRunning):
-                       if xbmcvfs.exists(snapshot):
-                           break
+                        if xbmcvfs.exists(snapshot):
+                            break
+                        xbmc.sleep(10)
 
                 elif xbmcvfs.exists(cam['url']):
                     xbmcvfs.copy(cam['url'], snapshot)
@@ -301,26 +275,25 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
             if snapshot:
                 cam['control'].setImage(snapshot, False)
 
-            if cam['url'][:4] != 'rtsp' and which(ffmpeg_exec):
-                xbmc.sleep(_interval)
+            if type != 'rtsp':
+                xbmc.sleep(SETTINGS['interval'])
 
-        if cam['url'][:4] == 'rtsp' and p.pid:
+        if type == 'rtsp' and p.pid:
             p.terminate()
 
-    def cleanup(self):
-        for i in range(MAXCAMS):
-            if self.cams[i]['tmpdir']:
-                files = xbmcvfs.listdir(self.cams[i]['tmpdir'])[1]
-                for file in files:
-                    xbmcvfs.delete(os.path.join(self.cams[i]['tmpdir'], file))
-                xbmcvfs.rmdir(self.cams[i]['tmpdir'])
 
-    #def onAction(self, action):
-    #    if action in (ACTION_PREVIOUS_MENU, ACTION_BACKSPACE, ACTION_NAV_BACK):
-    #        self.stop()
-    #    #else:
-    #    #    curWinID = xbmcgui.getCurrentWindowId()
-    #    #    xbmc.executebuiltin('Action(%s,%s)' % (self.Action[action.getId()], curWinID))
+    def cleanup(self):
+        for i in range(self.total):
+            files = xbmcvfs.listdir(self.cams[i]['tmpdir'])[1]
+            for file in files:
+                xbmcvfs.delete(os.path.join(self.cams[i]['tmpdir'], file))
+            xbmcvfs.rmdir(self.cams[i]['tmpdir'])
+
+
+    def onAction(self, action):
+        if action in (ACTION_PREVIOUS_MENU, ACTION_STOP, ACTION_BACKSPACE, ACTION_NAV_BACK):
+            self.stop()
+
 
     def stop(self):
         self.isRunning = False
@@ -329,8 +302,10 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
 if __name__ == '__main__':
     if streamid > 0:
         log('Addon called with streamid={}'.format(streamid))
+        if streamurl:
+            log('and url={}'.format(streamurl))
 
-    camPreview = CamPreviewDialog(urls, usernames, passwords)
+    camPreview = CamPreviewDialog(CAMERAS)
     camPreview.start()
 
     del camPreview

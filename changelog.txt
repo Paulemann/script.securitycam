@@ -1,4 +1,7 @@
 
+v1.5.1
+- Code cleanup and cosmetics
+
 v1.5.0
 - Added string.po language files as an alternative to strings.xml which will be deprecated in kodi v19
 
