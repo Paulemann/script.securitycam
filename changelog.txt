@@ -1,3 +1,8 @@
+v1.6.1
+- Code cleanup
+
+v1.6.0
+- Adaptions to make code run with both Matrix and Leia. Remove xbmc.python version from addon.xml (workaround to support Matrix and Leia with one release) 
 
 v1.5.1
 - Code cleanup and cosmetics

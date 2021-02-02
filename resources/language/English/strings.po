@@ -21,79 +21,47 @@ msgid "Camera 1"
 msgstr ""
 
 msgctxt "#32001"
-msgid "Image Url:"
+msgid "Active:"
 msgstr ""
 
 msgctxt "#32002"
-msgid "Username:"
+msgid "Image Url:"
 msgstr ""
 
 msgctxt "#32003"
-msgid "Password:"
+msgid "Username:"
 msgstr ""
 
 msgctxt "#32004"
-msgid "Active:"
+msgid "Password:"
 msgstr ""
 
 msgctxt "#32010"
 msgid "Camera 2"
 msgstr ""
 
-msgctxt "#32011"
-msgid "Image Url:"
-msgstr ""
-
-msgctxt "#32012"
-msgid "Username:"
-msgstr ""
-
-msgctxt "#32013"
-msgid "Password:"
-msgstr ""
-
-msgctxt "#32014"
-msgid "Active:"
-msgstr ""
-
 msgctxt "#32020"
 msgid "Camera 3"
-msgstr ""
-
-msgctxt "#32021"
-msgid "Image Url:"
-msgstr ""
-
-msgctxt "#32022"
-msgid "Username:"
-msgstr ""
-
-msgctxt "#32023"
-msgid "Password:"
-msgstr ""
-
-msgctxt "#32024"
-msgid "Active:"
 msgstr ""
 
 msgctxt "#32030"
 msgid "Camera 4"
 msgstr ""
 
-msgctxt "#32031"
-msgid "Image Url:"
+msgctxt "#32040"
+msgid "Camera 5"
 msgstr ""
 
-msgctxt "#32032"
-msgid "Username:"
+msgctxt "#32050"
+msgid "Camera 6"
 msgstr ""
 
-msgctxt "#32033"
-msgid "Password:"
+msgctxt "#32060"
+msgid "Camera 7"
 msgstr ""
 
-msgctxt "#32034"
-msgid "Active:"
+msgctxt "#32070"
+msgid "Camera 8"
 msgstr ""
 
 msgctxt "#33000"

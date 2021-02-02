@@ -23,6 +23,13 @@ try:
 except ImportError:
     from urllib2 import build_opener, HTTPPasswordMgrWithDefaultRealm, HTTPBasicAuthHandler, HTTPDigestAuthHandler, Request
 
+if sys.version_info.major < 3:
+    INFO = xbmc.LOGNOTICE
+    from xbmc import translatePath
+else:
+    INFO = xbmc.LOGINFO
+    from xbmcvfs import translatePath
+
 # Constants
 ACTION_PREVIOUS_MENU = 10
 ACTION_STOP = 13
@@ -105,13 +112,13 @@ else:
             CAMERAS.append(cam)
 
 # Utils
-def log(message,loglevel=xbmc.LOGNOTICE):
+def log(message,loglevel=INFO):
     xbmc.log(msg='[{}] {}'.format(__addon_id__, message), level=loglevel)
 
 
 def which(pgm):
     for path in os.getenv('PATH').split(os.path.pathsep):
-        p=os.path.join(path, pgm)
+        p = os.path.join(path, pgm)
         if os.path.exists(p) and os.access(p, os.X_OK):
             return p
 
@@ -241,7 +248,7 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
                       '-q:v', '10',
                       '-s', str(SETTINGS['width'])+'x'+str(SETTINGS['height']),
                       '-vcodec', 'mjpeg',
-                      xbmc.translatePath(output)]
+                      translatePath(output)]
             p = subprocess.Popen(command)
 
         while(self.isRunning):

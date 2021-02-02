@@ -21,80 +21,48 @@ msgid "Camera 1"
 msgstr "Kamera 1"
 
 msgctxt "#32001"
+msgid "Active:"
+msgstr "Aktiv:"
+
+msgctxt "#32002"
 msgid "Image Url:"
 msgstr "Url:"
 
-msgctxt "#32002"
+msgctxt "#32003"
 msgid "Username:"
 msgstr "Benutzername:"
 
-msgctxt "#32003"
+msgctxt "#32004"
 msgid "Password:"
 msgstr "Passwort:"
-
-msgctxt "#32004"
-msgid "Active:"
-msgstr "Aktiv:"
 
 msgctxt "#32010"
 msgid "Camera 2"
 msgstr "Kamera 2"
 
-msgctxt "#32011"
-msgid "Image Url:"
-msgstr "Url:"
-
-msgctxt "#32012"
-msgid "Username:"
-msgstr "Benutzername:"
-
-msgctxt "#32013"
-msgid "Password:"
-msgstr "Passwort:"
-
-msgctxt "#32014"
-msgid "Active:"
-msgstr "Aktiv:"
-
 msgctxt "#32020"
 msgid "Camera 3"
 msgstr "Kamera 3"
-
-msgctxt "#32021"
-msgid "Image Url:"
-msgstr "Url:"
-
-msgctxt "#32022"
-msgid "Username:"
-msgstr "Benutzername:"
-
-msgctxt "#32023"
-msgid "Password:"
-msgstr "Passwort:"
-
-msgctxt "#32024"
-msgid "Active:"
-msgstr "Aktiv:"
 
 msgctxt "#32030"
 msgid "Camera 4"
 msgstr "Kamera 4"
 
-msgctxt "#32031"
-msgid "Image Url:"
-msgstr "Url:"
+msgctxt "#32040"
+msgid "Camera 5"
+msgstr "Kamera 5"
 
-msgctxt "#32032"
-msgid "Username:"
-msgstr "Benutzername:"
+msgctxt "#32050"
+msgid "Camera 6"
+msgstr "Kamera 6"
 
-msgctxt "#32033"
-msgid "Password:"
-msgstr "Passwort:"
+msgctxt "#32060"
+msgid "Camera 7"
+msgstr "Kamera 7"
 
-msgctxt "#32034"
-msgid "Active:"
-msgstr "Aktiv:"
+msgctxt "#32070"
+msgid "Camera 8"
+msgstr "Kamera 8"
 
 msgctxt "#33000"
 msgid "Behavior"

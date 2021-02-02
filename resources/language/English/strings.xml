@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
   <string id="32000">Camera 1</string>
-  <string id="32001">Image Url:</string>
-  <string id="32002">Username:</string>
-  <string id="32003">Password:</string>
-  <string id="32004">Active:</string>
+  <string id="32001">Active:</string>
+  <string id="32002">Image Url:</string>
+  <string id="32003">Username:</string>
+  <string id="32004">Password:</string>
 
   <string id="32010">Camera 2</string>
-  <string id="32011">Image Url:</string>
-  <string id="32012">Username:</string>
-  <string id="32013">Password:</string>
-  <string id="32014">Active:</string>
-
   <string id="32020">Camera 3</string>
-  <string id="32021">Image Url:</string>
-  <string id="32022">Username:</string>
-  <string id="32023">Password:</string>
-  <string id="32024">Active:</string>
-
   <string id="32030">Camera 4</string>
-  <string id="32031">Image Url:</string>
-  <string id="32032">Username:</string>
-  <string id="32033">Password:</string>
-  <string id="32034">Active:</string>
+  <string id="32040">Camera 5</string>
+  <string id="32050">Camera 6</string>
+  <string id="32060">Camera 7</string>
+  <string id="32070">Camera 8</string>
 
   <string id="33000">Behavior</string>
 
