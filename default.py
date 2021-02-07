@@ -167,35 +167,35 @@ class CamPreviewDialog(xbmcgui.WindowDialog):
         alignment = SETTINGS['alignment']
 
         if alignment == 0: # vertical right, top to bottom
-            x = WIDTH - (w + p)
-            y = p + position * (h + p)
+            x = int(WIDTH - (w + p))
+            y = int(p + position * (h + p))
         if alignment == 1: # vertical left, top to bottom
-            x = p
-            y = p + position * (h + p)
+            x = int(p)
+            y = int(p + position * (h + p))
         if alignment == 2: # horizontal top, left to right
-            x = p + position * (w + p)
-            y = p
+            x = int(p + position * (w + p))
+            y = int(p)
         if alignment == 3: # horizontal bottom, left to right
-            x = p + position * (w + p)
-            y = HEIGHT - (h + p)
+            x = int(p + position * (w + p))
+            y = int(HEIGHT - (h + p))
         if alignment == 4: # square right
-            x = WIDTH - (2 - position%2) * (w + p)
-            y = p + position/2 * (h + p)
+            x = int(WIDTH - (2 - position%2) * (w + p))
+            y = int(p + position/2 * (h + p))
         if alignment == 5: # square left
-            x = p + position%2 * (w + p)
-            y = p + position/2 * (h + p)
+            x = int(p + position%2 * (w + p))
+            y = int(p + position/2 * (h + p))
         if alignment == 6: # vertical right, bottom to top
-            x = WIDTH - (w + p)
-            y = HEIGHT - (position + 1) * (h + p)
+            x = int(WIDTH - (w + p))
+            y = int(HEIGHT - (position + 1) * (h + p))
         if alignment == 7: # vertical left, bottom to top
-            x = p
-            y = HEIGHT - (position + 1) * (h + p)
+            x = int(p)
+            y = int(HEIGHT - (position + 1) * (h + p))
         if alignment == 8: # horizontal top, right to left
-            x = WIDTH - (position + 1) * (w + p)
-            y = p
+            x = int(WIDTH - (position + 1) * (w + p))
+            y = int(p)
         if alignment == 9: # horizontal bottom, right to left
-            x = WIDTH - (position + 1) * (w + p)
-            y = HEIGHT - (h + p)
+            x = int(WIDTH - (position + 1) * (w + p))
+            y = int(HEIGHT - (h + p))
 
         return x, y, w, h
 
