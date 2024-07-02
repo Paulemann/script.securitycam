@@ -1,3 +1,6 @@
+v3.0.1
+- Version updated
+
 v1.6.1
 - Code cleanup
 
