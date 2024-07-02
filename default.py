@@ -29,6 +29,7 @@ if sys.version_info.major < 3:
 else:
     INFO = xbmc.LOGINFO
     from xbmcvfs import translatePath
+DEBUG = xbmc.LOGDEBUG
 
 # Constants
 ACTION_PREVIOUS_MENU = 10

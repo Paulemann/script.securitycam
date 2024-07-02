@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.securitycam"
        name="Security Cam Overlay"
-       version="1.6.2"
+       version="3.0.1"
        provider-name="Ryan Melena, Paulemann">
   <requires>
     <import addon="script.module.requests" version="2.22.0" />
@@ -15,5 +15,8 @@
     <description lang="en">Up to 4 camera image feeds can be displayed simultaneously in one overlay. The image urls must provide a JPEG output and are queried at an adjustable interval for updates. The feeds can be arranged in various patterns.</description>
     <summary lang="de">Skript zur simultanen Anzeige mehrerer Security-Kamera Feeds (Bildersequenz).</summary>
     <description lang="de">Bis zu 4 Kamera Feeds lassen sich gleichzeitig darstellen. Die Bilderquellen müssen die Ausgabe im JPEG-Format unterstützen und werden zur Aktualisierung in einstellbaren Intervallen parallel abgefragt. Die Feeds können in verschiedenen Anordnungen gruppiert werden.</description>
+    <assets>
+      <icon>icon.png</icon>
+    </assets>
   </extension>
 </addon>
